@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Redirect;
 
 class StudentController extends Controller
 {
@@ -14,7 +16,10 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        $students = Student::all();
+        return Inertia::render('Student/Index', [
+            'students' => $students
+        ]);
     }
 
     /**
@@ -24,7 +29,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Student/Create');
     }
 
     /**
@@ -35,18 +40,13 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Student $student)
-    {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required'
+        ]);
+        
+        Student::create($request->all());
+        return Redirect::route('student.index');
     }
 
     /**
@@ -57,7 +57,7 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        //
+        return Inertia::render('Student/Edit', ['student' => $student]);
     }
 
     /**
@@ -69,7 +69,8 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        //
+        $student->update($request->all());
+        return Redirect::route('student.index');
     }
 
     /**
@@ -80,6 +81,7 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        //
+        $student->delete();
+        return Redirect::route('student.index');
     }
 }

@@ -14,7 +14,10 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
+        $courses = Course::all();
+        return Inertia::render('Mostrar', [
+            'courses' => $courses
+        ]);
     }
 
     /**
@@ -24,7 +27,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('FormCrear');
     }
 
     /**
@@ -35,18 +38,15 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Course  $course
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Course $course)
-    {
-        //
+        $request->validate([
+            'name' => 'required',
+            'schedule' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required'
+        ]);
+        
+        Course::create($request->all());
+        return Redirect::route('estudiantes.index');
     }
 
     /**
@@ -57,7 +57,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        //
+        return Inertia::render('FormEditar', ['atudent' => $course]);
     }
 
     /**
@@ -69,7 +69,8 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
+        $course->update($request->all());
+        return Redirect::route('estudiantes.index');
     }
 
     /**
@@ -80,6 +81,7 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        $course->delete();
+        return Redirect::route('estudiantes.index');
     }
 }
