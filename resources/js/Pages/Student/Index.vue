@@ -18,7 +18,7 @@
                     </InertiaLink>
                 </div>
 
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="bg-white overflow-hidden shadow sm:rounded-lg">
                     <table class="w-full divide-y divide-gray-300">
                         <thead class="bg-gray-50">
                             <tr>
@@ -67,10 +67,17 @@
                                 <td class="px-6 py-4">...</td>
                                 <td class="px-6 py-4">
                                     <div class="flex flex-row justify-center">
-                                        <a href="#">
+                                        <InertiaLink
+                                            :href="
+                                                route(
+                                                    'student.edit',
+                                                    student.id
+                                                )
+                                            "
+                                        >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                class="w-6 h-6 text-blue-400"
+                                                class="w-6 h-6 text-indigo-400 hover:text-indigo-300"
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 stroke="currentColor"
@@ -82,11 +89,16 @@
                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                                                 />
                                             </svg>
-                                        </a>
-                                        <a href="#" class="ml-4">
+                                        </InertiaLink>
+
+                                        <a
+                                            href="#"
+                                            @click="deleteItem(student.id)"
+                                            class="ml-5"
+                                        >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                class="w-6 h-6 text-red-400"
+                                                class="w-6 h-6 text-red-400 hover:text-red-300"
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 stroke="currentColor"
@@ -128,6 +140,24 @@ export default {
     },
     components: {
         AppLayout,
+    },
+    methods: {
+        deleteItem(id) {
+            this.$swal({
+                title: "¿Está seguro?",
+                text: "No podrás revertir esto.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, bórralo.",
+                cancelButtonText: "Cancelar",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$inertia.delete(route("student.destroy", id));
+                }
+            });
+        },
     },
 };
 </script>
