@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Redirect;
 
 class CourseController extends Controller
 {
@@ -15,7 +17,7 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::all();
-        return Inertia::render('Mostrar', [
+        return Inertia::render('Course/Index', [
             'courses' => $courses
         ]);
     }
@@ -27,7 +29,9 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return Inertia::render('FormCrear');
+        return Inertia::render('Course/Form', [
+            'action' => 'create'
+        ]);
     }
 
     /**
@@ -40,13 +44,13 @@ class CourseController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'schedule' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required'
+            'schedule'  => 'required',
+            'start_date'  => 'required',
+            'end_date'  => 'required'
         ]);
         
         Course::create($request->all());
-        return Redirect::route('estudiantes.index');
+        return Redirect::route('course.index');
     }
 
     /**
@@ -57,7 +61,10 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        return Inertia::render('FormEditar', ['atudent' => $course]);
+        return Inertia::render('Course/Form', [
+            'course' => $course,
+            'action' => 'update'
+        ]);
     }
 
     /**
@@ -70,7 +77,7 @@ class CourseController extends Controller
     public function update(Request $request, Course $course)
     {
         $course->update($request->all());
-        return Redirect::route('estudiantes.index');
+        return Redirect::route('course.index');
     }
 
     /**
@@ -82,6 +89,6 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         $course->delete();
-        return Redirect::route('estudiantes.index');
+        return Redirect::route('course.index');
     }
 }

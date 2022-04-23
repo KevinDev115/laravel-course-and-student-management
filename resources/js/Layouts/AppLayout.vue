@@ -60,6 +60,12 @@ const logout = () => {
                                 >
                                     Estudiantes
                                 </JetNavLink>
+                                <JetNavLink
+                                    :href="route('course.index')"
+                                    :active="route().current('course.index')"
+                                >
+                                    Cursos
+                                </JetNavLink>
                             </div>
                         </div>
 

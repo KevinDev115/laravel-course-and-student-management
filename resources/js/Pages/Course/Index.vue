@@ -1,8 +1,8 @@
 <template>
-    <AppLayout title="Estudiantes">
+    <AppLayout title="Cursos">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Estudiantes
+                Cursos
             </h2>
         </template>
 
@@ -10,7 +10,7 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-end my-3">
                     <InertiaLink
-                        :href="route('student.create')"
+                        :href="route('course.create')"
                         class="flex-shrink-0 bg-indigo-700 text-indigo-100 text-base font-semibold py-2 px-4 rounded-lg hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-indigo-200 cursor-pointer"
                         type="button"
                     >
@@ -26,16 +26,16 @@
                                     #
                                 </th>
                                 <th class="px-6 py-2 text-xs text-gray-500">
-                                    Nombres
+                                    Nombre
                                 </th>
                                 <th class="px-6 py-2 text-xs text-gray-500">
-                                    Edad
+                                    Horario
                                 </th>
                                 <th class="px-6 py-2 text-xs text-gray-500">
-                                    Email
+                                    Fecha Inicio
                                 </th>
                                 <th class="px-6 py-2 text-xs text-gray-500">
-                                    Cursos
+                                    Fecha Fin
                                 </th>
                                 <th class="px-6 py-2 text-xs text-gray-500">
                                     Acciones
@@ -44,35 +44,34 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-300">
                             <tr
-                                v-for="student in students"
-                                :key="student.id"
+                                v-for="course in courses"
+                                :key="course.id"
                                 class="text-center whitespace-nowrap"
                             >
                                 <td class="px-6 py-4 text-sm text-gray-500">
-                                    {{ student.id }}
+                                    {{ course.id }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="text-sm text-gray-900">
-                                        {{ student.name }} {{ student.surname }}
+                                        {{ course.name }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="text-sm text-gray-500">
-                                        {{ student.age }}
+                                        {{ course.schedule }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-500">
-                                    {{ student.email }}
+                                    {{ course.start_date }}
                                 </td>
-                                <td class="px-6 py-4">...</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">
+                                    {{ course.end_date }}
+                                </td>
                                 <td class="px-6 py-4">
                                     <div class="flex flex-row justify-center">
                                         <InertiaLink
                                             :href="
-                                                route(
-                                                    'student.edit',
-                                                    student.id
-                                                )
+                                                route('course.edit', course.id)
                                             "
                                         >
                                             <svg
@@ -93,7 +92,7 @@
 
                                         <a
                                             href="#"
-                                            @click="deleteItem(student.id)"
+                                            @click="deleteItem(course.id)"
                                             class="ml-5"
                                         >
                                             <svg
@@ -115,7 +114,7 @@
                                 </td>
                             </tr>
 
-                            <tr v-if="!students.length">
+                            <tr v-if="!courses.length">
                                 <td
                                     class="text-gray-300 text-center whitespace-nowrap p-4"
                                     colspan="10"
@@ -136,7 +135,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 
 export default {
     props: {
-        students: Array,
+        courses: Array,
     },
     components: {
         AppLayout,
@@ -154,7 +153,7 @@ export default {
                 cancelButtonText: "Cancelar",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.$inertia.delete(route("student.destroy", id));
+                    this.$inertia.delete(route("course.destroy", id));
                 }
             });
         },
