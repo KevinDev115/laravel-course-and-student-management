@@ -64,7 +64,9 @@
                                 <td class="px-6 py-4 text-sm text-gray-500">
                                     {{ student.email }}
                                 </td>
-                                <td class="px-6 py-4 text-left">
+                                <td
+                                    class="px-6 py-4 text-left text-sm text-gray-500"
+                                >
                                     <ul class="divide-y-2 divide-gray-200">
                                         <li
                                             v-for="course in student.courses"

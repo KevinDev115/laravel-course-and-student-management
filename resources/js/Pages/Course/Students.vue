@@ -2,6 +2,11 @@
     <AppLayout title="Estudiantes">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                <InertiaLink :href="route('course.index')">
+                    <i
+                        class="fas fa-arrow-left mr-3 cursor-pointer text-gray-500 hover:text-gray-800"
+                    ></i>
+                </InertiaLink>
                 Estudiantes -
                 <span class="text-indigo-700">{{ course.name }} </span>
             </h2>
@@ -22,7 +27,7 @@
 
                                 <select
                                     class="appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    placeholder="Seleccione un estudiante"
+                                    placeholder=""
                                     v-model="form.student_id"
                                 >
                                     <option
@@ -160,6 +165,7 @@ export default {
                 cancelButtonText: "Cancelar",
             }).then((result) => {
                 if (result.isConfirmed) {
+                    this.resetForm();
                     this.$inertia.put(
                         route("course.unassignStudent", this.course.id),
                         {

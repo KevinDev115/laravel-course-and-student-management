@@ -2,6 +2,11 @@
     <AppLayout title="Estudiantes">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                <InertiaLink :href="route('student.index')">
+                    <i
+                        class="fas fa-arrow-left mr-3 cursor-pointer text-gray-500 hover:text-gray-800"
+                    ></i>
+                </InertiaLink>
                 <span class="text-indigo-700">{{
                     action === "create" ? "Crear" : "Actualizar"
                 }}</span>
@@ -23,10 +28,18 @@
                                 </label>
                                 <input
                                     class="appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    :class="errors.name && 'border-red-500'"
                                     type="text"
                                     placeholder="Ingrese nombre(s)"
                                     v-model="form.name"
                                 />
+
+                                <p
+                                    v-if="errors.name"
+                                    class="text-red-500 text-xs italic"
+                                >
+                                    Campo obligatorio.
+                                </p>
                             </div>
 
                             <div class="w-full px-3 mb-6 md:mb-0">
@@ -69,10 +82,17 @@
                                 </label>
                                 <input
                                     class="appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    :class="errors.name && 'border-red-500'"
                                     type="email"
                                     placeholder="Ingrese E-mail"
                                     v-model="form.email"
                                 />
+                                <p
+                                    v-if="errors.email"
+                                    class="text-red-500 text-xs italic"
+                                >
+                                    Campo obligatorio.
+                                </p>
                             </div>
                         </div>
 
@@ -110,7 +130,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 
 export default {
-    props: ["action", "student"],
+    props: ["action", "student", "errors"],
     components: {
         AppLayout,
     },

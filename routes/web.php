@@ -49,3 +49,5 @@ Route::put('student/{student}/courses/unassign', [StudentController::class, 'una
 Route::get('course/{course}/students', [CourseController::class, 'viewStudents'])->name('course.students');
 Route::put('course/{course}/students/assign', [CourseController::class, 'assignStudent'])->name('course.assignStudent');
 Route::put('course/{course}/students/unassign', [CourseController::class, 'unassignStudent'])->name('course.unassignStudent');
+
+Route::redirect('/', '/login', 301);

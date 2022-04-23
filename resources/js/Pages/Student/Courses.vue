@@ -2,6 +2,11 @@
     <AppLayout title="Estudiantes">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                <InertiaLink :href="route('student.index')">
+                    <i
+                        class="fas fa-arrow-left mr-3 cursor-pointer text-gray-500 hover:text-gray-800"
+                    ></i>
+                </InertiaLink>
                 Cursos -
                 <span class="text-indigo-700"
                     >{{ student.name }} {{ student.surname || "" }}</span
@@ -162,6 +167,7 @@ export default {
                 cancelButtonText: "Cancelar",
             }).then((result) => {
                 if (result.isConfirmed) {
+                    this.resetForm();
                     this.$inertia.put(
                         route("student.unassignCourse", this.student.id),
                         {
