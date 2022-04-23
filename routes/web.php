@@ -41,3 +41,11 @@ Route::middleware([
 
 Route::resource('student', StudentController::class);
 Route::resource('course', CourseController::class);
+
+Route::get('student/{student}/courses', [StudentController::class, 'viewCourses'])->name('student.courses');
+Route::put('student/{student}/courses/assign', [StudentController::class, 'assignCourse'])->name('student.assignCourse');
+Route::put('student/{student}/courses/unassign', [StudentController::class, 'unassignCourse'])->name('student.unassignCourse');
+
+Route::get('course/{course}/students', [CourseController::class, 'viewStudents'])->name('course.students');
+Route::put('course/{course}/students/assign', [CourseController::class, 'assignStudent'])->name('course.assignStudent');
+Route::put('course/{course}/students/unassign', [CourseController::class, 'unassignStudent'])->name('course.unassignStudent');

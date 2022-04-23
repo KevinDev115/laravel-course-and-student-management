@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
@@ -90,5 +91,57 @@ class CourseController extends Controller
     {
         $course->delete();
         return Redirect::route('course.index');
+    }
+
+    /**
+     * Display a list of the course's students.
+     *
+     * @param  \App\Models\Course $course
+     * @return \Illuminate\Http\Response
+     */
+    public function viewStudents(Course $course)
+    {
+        $students = Student::whereNotIn(
+            'id',
+            $course->students->pluck('id')->toArray()
+        )->get();        
+
+        return Inertia::render('Course/Students', [
+            'course' => $course,
+            'courseStudents' => $course->students,
+            'students' => $students
+        ]);
+    }
+
+    /**
+     * Assign a student to a course.
+     *
+     * @param  \App\Models\Course $course
+     * @return \Illuminate\Http\Response
+     */
+    public function assignStudent(Request $request, Course $course)
+    {
+        $request->validate([
+            'student_id' => 'required'
+        ]);
+
+        $course->students()->sync([$request->student_id], false);
+        return Redirect::route('course.students', $course->id);
+    }
+
+    /**
+     * Unassign a student to a course.
+     *
+     * @param  \App\Models\Course $course
+     * @return \Illuminate\Http\Response
+     */
+    public function unassignStudent(Request $request, Course $course)
+    {
+        $request->validate([
+            'student_id' => 'required'
+        ]);
+
+        $course->students()->detach($request->student_id);
+        return Redirect::route('course.students', $course->id);
     }
 }
