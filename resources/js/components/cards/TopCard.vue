@@ -33,7 +33,7 @@
                             <InertiaLink
                                 :href="
                                     route(
-                                        'course.edit',
+                                        'course.students',
                                         topCourses[courseIndex]?.id || 0
                                     )
                                 "
