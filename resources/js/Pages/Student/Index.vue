@@ -44,11 +44,13 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-300">
                             <tr
-                                v-for="student in students"
+                                v-for="student in students.data"
                                 :key="student.id"
-                                class="text-center whitespace-nowrap"
+                                class="whitespace-nowrap"
                             >
-                                <td class="px-6 py-4 text-sm text-gray-500">
+                                <td
+                                    class="px-6 py-4 text-sm text-gray-500 text-center"
+                                >
                                     {{ student.id }}
                                 </td>
                                 <td class="px-6 py-4">
@@ -56,7 +58,7 @@
                                         {{ student.name }} {{ student.surname }}
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-center">
                                     <div class="text-sm text-gray-500">
                                         {{ student.age }}
                                     </div>
@@ -69,11 +71,29 @@
                                 >
                                     <ul class="divide-y-2 divide-gray-200">
                                         <li
-                                            v-for="course in student.courses"
+                                            v-for="course in student.courses.slice(
+                                                0,
+                                                3
+                                            )"
                                             :key="course.id"
                                             class="p-1"
                                         >
                                             {{ course.name }}
+                                        </li>
+                                        <li
+                                            v-if="student.courses.length > 3"
+                                            class="text-blue-500 hover:text-blue-300"
+                                        >
+                                            <InertiaLink
+                                                :href="
+                                                    route(
+                                                        'student.courses',
+                                                        student.id
+                                                    )
+                                                "
+                                            >
+                                                Ver mas +
+                                            </InertiaLink>
                                         </li>
                                     </ul>
                                 </td>
@@ -119,7 +139,7 @@
                                 </td>
                             </tr>
 
-                            <tr v-if="!students.length">
+                            <tr v-if="!students.data.length">
                                 <td
                                     class="text-gray-300 text-center whitespace-nowrap p-4"
                                     colspan="10"
@@ -130,6 +150,10 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div class="mt-5 flex justify-end">
+                    <Pagination :config="students" />
+                </div>
             </div>
         </div>
     </AppLayout>
@@ -137,13 +161,13 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout.vue";
+import Pagination from "../../components/utils/Pagination.vue";
 
 export default {
-    props: {
-        students: Array,
-    },
+    props: ["students"],
     components: {
         AppLayout,
+        Pagination,
     },
     methods: {
         deleteItem(id) {

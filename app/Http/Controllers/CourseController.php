@@ -7,6 +7,8 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
+use Response;
 
 class CourseController extends Controller
 {
@@ -17,7 +19,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::all();
+        $courses = Course::paginate(5);
         return Inertia::render('Course/Index', [
             'courses' => $courses
         ]);
@@ -143,5 +145,25 @@ class CourseController extends Controller
 
         $course->students()->detach($request->student_id);
         return Redirect::route('course.students', $course->id);
+    }
+
+    /**
+     * Returns a list of the top 3 courses 
+     * with the most students in the last 6 months.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function topCourses()
+    {
+        $topCourses = Course::whereBetween('created_at', [
+            Carbon::now()->subMonth(6)->format('Y-m-d'),
+            Carbon::now()->addDay()->format('Y-m-d')
+        ])
+        ->get()
+        ->sortByDesc('numberOfStudents')
+        ->take(3)
+        ->values();
+
+        return response()->json($topCourses, 200);
     }
 }

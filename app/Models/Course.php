@@ -16,8 +16,17 @@ class Course extends Model
         'end_date'
     ];
 
+    protected $appends = [
+        'numberOfStudents'
+    ];
+
     public function students()
     {
         return $this->belongsToMany(Student::class);
+    }
+
+    public function getNumberOfStudentsAttribute()
+    {
+        return $this->students->count();
     }
 }
